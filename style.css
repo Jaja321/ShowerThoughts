@@ -37,14 +37,21 @@
 	margin-left:50%;
 	top:10%;
 }
-#footer{
+.footer{
 	position:absolute;
-	left:0px;
 	bottom:0px;
-	background-color:black;
-	height:40px;
+	font-family:Arial;
+	font-size:12px;
+	padding-top: -20px;
+	background-color: rgba(0, 0, 0, 0.3);
 }
-#source{
-	position:absolute;
-	bottom:-10px;
+#l{
+	left:0px;
+}
+#r{
+	right:0px;
+}
+a {
+  color: inherit; 
+  text-decoration: inherit; 
 }
