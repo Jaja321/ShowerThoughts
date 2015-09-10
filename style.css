@@ -2,55 +2,67 @@
 	font-family: 'font'; /*a name to be used later*/
 	src: url('assets/font.otf'); /*URL to font*/
 }
-#page{
-	width:100%;
-	height:100%;
-	position:absolute;
-	top:0px;
-	left:0px;
+
+body {
+	color:#F0F0F0;
+	font-family: 'font';
+	background-color: #fff;
+	text-shadow: #000 5px 5px 20px;
+	-webkit-font-smoothing: antialiased;
+	padding: 0px;
+	margin: 0px;
+}
+
+#loading {
+	position: absolute;
+	left:50%;
+	top:50%;
+	transform: translate(-50%, -50%);
+}
+
+#image {
+	width: 100%;
+	height: 100%;
 	background: no-repeat center center fixed;
+	background-color: transparent;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
-	background-color:#F0F0F0;
-	font-family: 'font';
-	color: #fff;
-	text-shadow: #000 5px 5px 20px;
-	-webkit-font-smoothing: antialiased;
 }
-#quote{
-	margin-left:100px;
-	margin-right:100px;
-	margin-top: 100px;
+
+#centercontainer {
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	position: absolute;
+	left:50%;
+	top:50%;
+	transform: translate(-50%, -50%);
+	display: table;
+	padding: 10%;
+}
+
+#quote {
 	text-align: center;
 	font-size:50px;
 }
-#author{
-	margin-left:auto;
-	margin-right:150px;
-	width:200px;
-	font-size:20px;
+
+#author {
+	margin-top: 40px;
+	text-align: right;
+	font-size: 20px;
 }
-#loading{
+
+#picby {
 	position:absolute;
-	margin-left:50%;
-	top:10%;
+	bottom:10px;
+	text-align: center;
+	width: 100%;
+	font-size:14px;
 }
-.footer{
-	position:absolute;
-	bottom:0px;
-	font-family:Arial;
-	font-size:12px;
-	padding-top: -20px;
-	background-color: rgba(0, 0, 0, 0.3);
-}
-#l{
-	left:0px;
-}
-#r{
-	right:0px;
-}
+
 a {
   color: inherit; 
   text-decoration: inherit; 
