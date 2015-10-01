@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+  "name": "Shower Thoughts New Tab",
+  "version": "1.0",
+  "description": "Shower Thoughts and Earth Porn",
+  "icons": {
+  	"16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "chrome_url_overrides": {
+    "newtab" : "index.html"
+  }
+}
