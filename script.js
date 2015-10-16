@@ -24,9 +24,9 @@ var isValidData = function (data) {
 	return data != null && data.shower != null && data.earth != null && data.date != null;
 }
 
-var loadFromNetwork = function (data) {
-	$.getJSON("https://www.reddit.com/r/earthporn/top.json?sort=top&t=all&limit=100",function(json){
-		var rand=Math.floor(Math.random() * 100);
+var loadFromNetwork = function () {
+	$.getJSON("https://www.reddit.com/r/earthporn/top.json?sort=top&t=month&limit=20",function(json){
+		var rand=Math.floor(Math.random() * 20);
 		var post=json.data.children[rand].data;
 		var url=post.url;
 		var author=post.author;
@@ -38,8 +38,8 @@ var loadFromNetwork = function (data) {
 		appstore.set({earth: {author: author, postUrl: postUrl, imageUrl: imageUrl}}, null);
 		setEarthPorn(author, postUrl, imageUrl);
 	});
-	$.getJSON("https://www.reddit.com/r/showerthoughts/top.json?sort=top&t=all&limit=100",function(json) {
-		var rand=Math.floor(Math.random() * 100);
+	$.getJSON("https://www.reddit.com/r/showerthoughts/top.json?sort=top&t=month&limit=20",function(json) {
+		var rand=Math.floor(Math.random() * 20);
 		var post=json.data.children[rand].data;
 		var quote=post.title;
 		var author=post.author;
