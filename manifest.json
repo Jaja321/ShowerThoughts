@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Shower Thoughts New Tab",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Shower Thoughts and Earth Porn",
   "icons": {
   	"16": "icon.png",
