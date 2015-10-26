@@ -1,12 +1,21 @@
 var appstore = chrome.storage.sync;
 
 $('document').ready(function(){
+    refresh(false);
+
+    $('#refresh').click(function () {
+        refresh(true);
+    });
+});
+
+var refresh = function(force) {
+	$('#loading').show();
 	$('.content').hide();
 
     appstore.get(['date', 'shower', 'earth'], function(data) {
     	var today = (new Date()).toDateString();
 
-    	if (isValidData(data) && data.date == today) {
+    	if (!force && isValidData(data) && data.date == today) {
     		var earth = data.earth;
     		setEarthPorn(earth.author, earth.postUrl, earth.imageUrl);
 
@@ -17,8 +26,8 @@ $('document').ready(function(){
     		appstore.set({date: today}, null);
     		loadFromNetwork();
     	}
-    });
-});
+    });	
+}
 
 var isValidData = function (data) {
 	return data != null && data.shower != null && data.earth != null && data.date != null;

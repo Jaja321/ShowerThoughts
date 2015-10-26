@@ -63,6 +63,19 @@ body {
 	font-size:14px;
 }
 
+#github {
+	position: absolute;
+	bottom: 20px;
+	left: 20px;
+}
+
+#refresh {
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+	cursor: hand;
+}
+
 a {
   color: inherit; 
   text-decoration: inherit; 
