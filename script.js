@@ -26,12 +26,12 @@ var refresh = function(force) {
     		appstore.set({date: today}, null);
     		loadFromNetwork();
     	}
-    });	
-}
+    });
+};
 
 var isValidData = function (data) {
-	return data != null && data.shower != null && data.earth != null && data.date != null;
-}
+	return data !== null && data.shower !== null && data.earth !== null && data.date !== null;
+};
 
 var loadFromNetwork = function () {
 	$.getJSON("https://www.reddit.com/r/earthporn/top.json?sort=top&t=month&limit=20",function(json){
@@ -57,7 +57,7 @@ var loadFromNetwork = function () {
 		appstore.set({shower: {author: author, quote: quote, quoteUrl: quoteUrl}}, null);
 		setShowerThought(author, quote, quoteUrl);
 	});
-}
+};
 
 var setEarthPorn = function (author, postUrl, imageUrl) {
 	$('#picby').html("<a href='"+postUrl+"' target='_blank'>photo by u/"+author+"</a>");
@@ -67,13 +67,13 @@ var setEarthPorn = function (author, postUrl, imageUrl) {
 
 		$('#image').css('background-image', "url("+imageUrl+")");
 		$('.content').fadeIn("slow");
-	});	
-}
+	});
+};
 
 var setShowerThought = function (author, quote, quoteUrl) {
 	$('#quote').html("\""+quote+"\"");
 	$('#author').html(" - <a href='"+quoteUrl+"' target='_blank'>u/"+author+"</a>");
-}
+};
 
 var tryConvertUrl = function (url) {
 	if (url.indexOf('imgur.com') > 0 || url.indexOf('/gallery/') > 0) {
