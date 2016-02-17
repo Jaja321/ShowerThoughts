@@ -63,20 +63,43 @@ body {
 	font-size:14px;
 }
 
-#github {
+#button_frame {
 	position: absolute;
 	bottom: 20px;
-	left: 20px;
+	left: 0px;
 }
 
-#refresh {
+.button {
+	cursor: hand;
+	margin-left: 20px;
+	display: inline;
+}
+
+#todo_frame {
 	position: absolute;
-	bottom: 20px;
+  bottom: 0px;
+  width: 360px;
 	right: 20px;
+}
+
+#todo_toggle {
+	width: 32px;
+	height: 32px;
+	padding-bottom: 20px;
+	right: 0px;
+	float: right;
 	cursor: hand;
 }
 
+#todo_iframe {
+	width: 100%;
+	height: 400px;
+	display: none;
+	background-color: white;
+	overflow: hidden;
+}
+
 a {
-  color: inherit; 
-  text-decoration: inherit; 
+  color: inherit;
+  text-decoration: inherit;
 }

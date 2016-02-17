@@ -3,9 +3,10 @@ var appstore = chrome.storage.sync;
 $('document').ready(function(){
     refresh(false);
 
-    $('#refresh').click(function () {
-        refresh(true);
-    });
+    $('#refresh').click(function () { refresh(true); });
+
+    init_todo();
+    $('#todo_toggle').click(function() { toggle_todo(false); });
 });
 
 var refresh = function(force) {
@@ -89,4 +90,24 @@ var tryConvertUrl = function (url) {
 		return url.replace(/r\/[^ \/]+\/(\w+)/, '$1') + '.jpg';
 	}
 	return url;
+};
+
+var init_todo = function() {
+  appstore.get(['todo_enabled'], function(data) {
+    if (data !== null && data.todo_enabled) {
+      toggle_todo(true);
+    }
+  });
+};
+
+var toggle_todo = function(force_on) {
+  var frame = $('#todo_iframe');
+  var hidden = frame.css("display") === "none";
+
+  var enable = hidden || force_on;
+  if (enable && frame.attr("src") == "about:blank") {
+    frame.attr("src", "https://chrome.todoist.com/?mini=1");
+  }
+  frame.css("display", enable ? "inline" : "none");
+  appstore.set({todo_enabled: enable}, null);
 };
