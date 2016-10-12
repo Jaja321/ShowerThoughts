@@ -1,40 +1,80 @@
-$('document').ready(function(){	
-	$('#page').hide();
-	$.getJSON("https://www.reddit.com/r/earthporn/top.json?sort=top&t=all&limit=100",function(json){
-		var rand=Math.floor(Math.random() * 100);
+var appstore = chrome.storage.sync;
+
+$('document').ready(function(){
+    refresh(false);
+
+    $('#refresh').click(function () { refresh(true); });
+
+    init_todo();
+    $('#todo_toggle').click(function() { toggle_todo(false); });
+});
+
+var refresh = function(force) {
+	$('#loading').show();
+	$('.content').hide();
+
+    appstore.get(['date', 'shower', 'earth'], function(data) {
+    	var today = (new Date()).toDateString();
+
+    	if (!force && isValidData(data) && data.date == today) {
+    		var earth = data.earth;
+    		setEarthPorn(earth.author, earth.postUrl, earth.imageUrl);
+
+    		var shower = data.shower;
+    		setShowerThought(shower.author, shower.quote, shower.quoteUrl);
+
+    	} else {
+    		appstore.set({date: today}, null);
+    		loadFromNetwork();
+    	}
+    });
+};
+
+var isValidData = function (data) {
+	return data !== null && data.shower !== null && data.earth !== null && data.date !== null;
+};
+
+var loadFromNetwork = function () {
+	$.getJSON("https://www.reddit.com/r/earthporn/top.json?sort=top&t=month&limit=20",function(json){
+		var rand=Math.floor(Math.random() * 20);
 		var post=json.data.children[rand].data;
 		var url=post.url;
 		var author=post.author;
 		var title=post.title.toLowerCase();
-		var imageurl=post.permalink;
-		$('#imageurl').attr("href","http://www.reddit.com"+imageurl);
-		$('#picby').html("Photo by: u/"+author);
-		if(title.indexOf("[oc]")==-1){
-			$('#r').hide();
-		}
-		betterUrl=tryConvertUrl(url);
-		if(betterUrl!=''){
-			url=betterUrl;
-		}
-		$('<img/>').attr('src', url).load(function() {
-   			$(this).remove(); // prevent memory leaks
-   			$('#loading').hide();
-   			$('#page').css('background-image', "url("+url+")");		
-   			$('#page').fadeIn("slow");
-		});	
+		var postUrl="http://www.reddit.com"+post.permalink;
+
+		var imageUrl=tryConvertUrl(url);
+
+		appstore.set({earth: {author: author, postUrl: postUrl, imageUrl: imageUrl}}, null);
+		setEarthPorn(author, postUrl, imageUrl);
 	});
-	$.getJSON("https://www.reddit.com/r/showerthoughts/top.json?sort=top&t=all&limit=100",function(json){
-		var rand=Math.floor(Math.random() * 100);
+	$.getJSON("https://www.reddit.com/r/showerthoughts/top.json?sort=top&t=month&limit=20",function(json) {
+		var rand=Math.floor(Math.random() * 20);
 		var post=json.data.children[rand].data;
 		var quote=post.title;
 		var author=post.author;
-		var quoteurl=post.permalink;
-		$('#quote').html("\""+quote+"\"");
-		$('#author').html("u/"+author);
-		$('#quoteurl').attr("href","http://www.reddit.com"+quoteurl);
-	});
+		var quoteUrl="http://www.reddit.com"+post.permalink;
 
-});
+		appstore.set({shower: {author: author, quote: quote, quoteUrl: quoteUrl}}, null);
+		setShowerThought(author, quote, quoteUrl);
+	});
+};
+
+var setEarthPorn = function (author, postUrl, imageUrl) {
+	$('#picby').html("<a href='"+postUrl+"' target='_blank'>photo by u/"+author+"</a>");
+	$('<img/>').attr('src', imageUrl).load(function() {
+		$(this).remove(); // prevent memory leaks
+		$('#loading').fadeOut("fast");
+
+		$('#image').css('background-image', "url("+imageUrl+")");
+		$('.content').fadeIn("slow");
+	});
+};
+
+var setShowerThought = function (author, quote, quoteUrl) {
+	$('#quote').html("\""+quote+"\"");
+	$('#author').html(" - <a href='"+quoteUrl+"' target='_blank'>u/"+author+"</a>");
+};
 
 var tryConvertUrl = function (url) {
 	if (url.indexOf('imgur.com') > 0 || url.indexOf('/gallery/') > 0) {
@@ -49,5 +89,25 @@ var tryConvertUrl = function (url) {
 		}
 		return url.replace(/r\/[^ \/]+\/(\w+)/, '$1') + '.jpg';
 	}
-	return '';
+	return url;
+};
+
+var init_todo = function() {
+  appstore.get(['todo_enabled'], function(data) {
+    if (data !== null && data.todo_enabled) {
+      toggle_todo(true);
+    }
+  });
+};
+
+var toggle_todo = function(force_on) {
+  var frame = $('#todo_iframe');
+  var hidden = frame.css("display") === "none";
+
+  var enable = hidden || force_on;
+  if (enable && frame.attr("src") == "about:blank") {
+    frame.attr("src", "https://chrome.todoist.com/?mini=1");
+  }
+  frame.css("display", enable ? "inline" : "none");
+  appstore.set({todo_enabled: enable}, null);
 };
